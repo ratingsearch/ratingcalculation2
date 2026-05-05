@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>レイティング計算ツール</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --border: #e2e0d8;
+  --border-strong: #c8c5b8;
+  --text: #1a1916;
+  --text-muted: #7a7870;
+  --accent: #2d5a3d;
+  --accent-light: #eaf2ec;
+  --red: #c0392b;
+  --red-light: #fdf0ee;
+  --blue: #1a4a7a;
+  --tab-active-bg: #1a1916;
+  --tab-active-text: #f5f4f0;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.page-header {
+  background: var(--text);
+  color: var(--bg);
+  padding: 2rem 2rem 1.75rem;
+}
+
+.page-header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+
+.page-header p {
+  font-size: 12px;
+  opacity: 0.55;
+  letter-spacing: 0.03em;
+}
+
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.mode-tabs {
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.tab {
+  flex: 1;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'Noto Sans JP', sans-serif;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  transition: all 0.15s;
+  text-align: center;
+}
+
+.tab.active {
+  background: var(--tab-active-bg);
+  color: var(--tab-active-text);
+}
+
+.tab:not(:last-child) {
+  border-right: 1px solid var(--border);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.card-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.field-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+input[type=number] {
+  width: 100px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color 0.15s;
+  -moz-appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+input[type=number]:focus { outline: none; border-color: var(--text); }
+
+select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+select:focus { outline: none; border-color: var(--text); }
+
+.opp-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.opp-num {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+  color: var(--text-muted);
+  min-width: 28px;
+  letter-spacing: 0.05em;
+}
+
+.opp-card label {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.rm-btn {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.rm-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-light); }
+
+.add-btn {
+  width: 100%;
+  padding: 10px;
+  background: none;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-bottom: 1.25rem;
+  transition: all 0.15s;
+}
+
+.add-btn:hover { background: var(--surface); border-color: var(--text); color: var(--text); }
+
+.btn-row { display: flex; gap: 10px; margin-bottom: 2rem; }
+
+.btn-reset {
+  padding: 11px 20px;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-family: 'Noto Sans JP', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  width: 100%;
+}
+
+.btn-reset:hover { border-color: var(--border-strong); color: var(--text); }
+
+.result-area { display: none; }
+.result-area.show { display: block; }
+
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.result-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 500px) {
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .metrics .metric:nth-child(2) { border-right: 1px solid var(--border); }
+  .metrics .metric:nth-child(3) { border-top: 1px solid var(--border); border-right: none; }
+  .metrics .metric:nth-child(4) { border-top: 1px solid var(--border); }
+}
+
+.metric {
+  background: var(--surface);
+  padding: 1rem 1.25rem;
+}
+
+.metric:not(:last-child) { border-right: 1px solid var(--border); }
+
+.metric-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.metric-val {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.metric-val.pos { color: var(--accent); }
+.metric-val.neg { color: var(--red); }
+.metric-val.blue { color: var(--blue); }
+
+.table-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg); }
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.03em;
+}
+
+.badge-w { background: var(--accent-light); color: var(--accent); }
+.badge-l { background: var(--red-light); color: var(--red); }
+
+.pts-pos { color: var(--accent); font-weight: 700; font-family: 'DM Mono', monospace; }
+.pts-neg { color: var(--red); font-weight: 700; font-family: 'DM Mono', monospace; }
+
+.note-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.note-box div + div { margin-top: 2px; }
+.mono { font-family: 'DM Mono', monospace; }
+
+.live-change {
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+}
+
+.live-change.pos { color: var(--accent); border-color: var(--accent); background: var(--accent-light); }
+.live-change.neg { color: var(--red); border-color: var(--red); background: var(--red-light); }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>レイティング計算ツール</h1>
+  <p>卓球レイティング増減の簡易計算 — α=5 / β=75</p>
+</div>
+
+<div class="container">
+
+  <div class="mode-tabs">
+    <button class="tab active" onclick="setMode('existing')">レイティングあり</button>
+    <button class="tab" onclick="setMode('new')">初参加（レイティングなし）</button>
+  </div>
+
+  <div class="card" id="myRatingCard">
+    <div class="card-label">自分のレイティング</div>
+    <div class="field-row">
+      <input type="number" id="myRating" value="1500" min="0" max="9999">
+      <span id="liveChange" class="live-change" style="display:none;"></span>
+    </div>
+  </div>
+
+  <div class="card" id="newPlayerCard" style="display:none;">
+    <div class="card-label">初参加モード</div>
+    <p class="field-hint">対戦結果を入力すると初期レイティングを自動計算します。<br>全勝・全敗の場合は片方を 1800 として計算します。</p>
+  </div>
+
+  <div id="opponents"></div>
+  <button class="add-btn" onclick="addOpponent()">＋ 対戦相手を追加（最大13人）</button>
+
+  <div class="btn-row">
+    <button class="btn-reset" onclick="reset()">リセット</button>
+  </div>
+
+  <div class="result-area" id="result">
+    <div class="result-header">
+      <span class="result-title" id="resultTitle">計算結果</span>
+    </div>
+    <div class="metrics" id="metrics"></div>
+    <div class="table-card">
+      <div class="section-label">対戦詳細</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:18%">相手</th>
+            <th style="width:12%">勝敗</th>
+            <th style="width:22%">レイティング差</th>
+            <th style="width:15%">増減</th>
+            <th>備考</th>
+          </tr>
+        </thead>
+        <tbody id="detail-body"></tbody>
+      </table>
+    </div>
+    <div id="result-note" class="note-box" style="display:none;"></div>
+  </div>
+
+</div>
+
+<script>
+const TABLE = [
+  { max: 12,  hiWin: 8,  loWin: 8  },
+  { max: 37,  hiWin: 7,  loWin: 10 },
+  { max: 62,  hiWin: 6,  loWin: 13 },
+  { max: 87,  hiWin: 5,  loWin: 16 },
+  { max: 112, hiWin: 4,  loWin: 20 },
+  { max: 137, hiWin: 3,  loWin: 25 },
+  { max: 162, hiWin: 2,  loWin: 30 },
+  { max: 187, hiWin: 2,  loWin: 35 },
+  { max: 212, hiWin: 1,  loWin: 40 },
+  { max: 237, hiWin: 1,  loWin: 45 },
+  { max: Infinity, hiWin: 0, loWin: 50 },
+];
+
+const FALLBACK = 1800;
+const ALPHA = 5;
+const BETA = 75;
+
+let mode = 'existing';
+let opponentCount = 0;
+let oppIds = [];
+
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', (i === 0 && m === 'existing') || (i === 1 && m === 'new'));
+  });
+  document.getElementById('myRatingCard').style.display = m === 'existing' ? '' : 'none';
+  document.getElementById('newPlayerCard').style.display = m === 'new' ? '' : 'none';
+  document.getElementById('result').classList.remove('show');
+  updateLive();
+}
+
+function getPoints(myRating, oppRating, win) {
+  const diff = Math.abs(myRating - oppRating);
+  const row = TABLE.find(r => diff <= r.max);
+  const iAmHigher = myRating >= oppRating;
+  if (win) return iAmHigher ? row.hiWin : row.loWin;
+  else return -(iAmHigher ? row.loWin : row.hiWin);
+}
+
+function addOpponent() {
+  if (oppIds.length >= 13) return;
+  const idx = opponentCount++;
+  oppIds.push(idx);
+  const n = oppIds.length;
+
+  const div = document.createElement('div');
+  div.className = 'opp-card';
+  div.id = 'opp-' + idx;
+  div.innerHTML = `
+    <span class="opp-num">#${String(n).padStart(2,'0')}</span>
+    <label>レイティング</label>
+    <input type="number" id="oppRating-${idx}" value="1500" min="0" max="9999">
+    <select id="oppResult-${idx}">
+      <option value="1">勝ち</option>
+      <option value="0">負け</option>
+    </select>
+    <button class="rm-btn" onclick="removeOpponent(${idx})" title="削除">×</button>
+  `;
+
+  document.getElementById('opponents').appendChild(div);
+
+  // 変更されたら即計算
+  document.getElementById(`oppRating-${idx}`).addEventListener('input', updateLive);
+  document.getElementById(`oppResult-${idx}`).addEventListener('change', updateLive);
+
+  updateLive();
+}
+
+function removeOpponent(idx) {
+  const el = document.getElementById('opp-' + idx);
+  if (el) el.remove();
+  oppIds = oppIds.filter(i => i !== idx);
+  updateLive();
+}
+
+function collectRows(myRating) {
+  const rows = [];
+  for (const idx of oppIds) {
+    const el = document.getElementById('opp-' + idx);
+    if (!el || !el.isConnected) continue;
+
+    const oppRating = parseFloat(document.getElementById('oppRating-' + idx).value);
+    const result = parseInt(document.getElementById('oppResult-' + idx).value);
+
+    if (isNaN(oppRating)) continue;
+
+    const pts = getPoints(myRating, oppRating, result === 1);
+    rows.push({ oppRating, result, pts });
+  }
+  return rows;
+}
+
+function applyRules(myRating, rows) {
+  const wins = rows.filter(r => r.result === 1);
+  const losses = rows.filter(r => r.result === 0);
+  const totalRaw = rows.reduce((s, r) => s + r.pts, 0);
+
+  let finalChange = totalRaw;
+  let noteLines = [];
+
+  if (Math.abs(totalRaw) <= ALPHA) {
+    finalChange = 0;
+    noteLines.push(`増減値が±${ALPHA}以下のため、ルールによりレイティングは変動しません。`);
+  } else if (Math.abs(totalRaw) >= BETA) {
+    const bestWin = wins.length ? Math.max(...wins.map(r => r.oppRating)) : FALLBACK;
+    const worstLoss = losses.length ? Math.min(...losses.map(r => r.oppRating)) : FALLBACK;
+    const resultRating = myRating + totalRaw;
+    const newRaw = (bestWin + worstLoss) / 4 + resultRating / 2;
+    finalChange = Math.round(newRaw) - myRating;
+
+    noteLines.push(`増減値が±${BETA}以上のため再計算されました。`);
+    noteLines.push(`BestWin = ${bestWin}、WorstLoss = ${worstLoss}、仮レイティング = ${resultRating}`);
+    noteLines.push(`新レイティング = (${bestWin} + ${worstLoss}) / 4 + ${resultRating} / 2 = ${Math.round(newRaw)}`);
+  }
+
+  return { finalChange, noteLines, wins, losses, totalRaw };
+}
+
+function renderDetail(rows, myRating) {
+  return rows.map(r => {
+    const diff = Math.abs(myRating - r.oppRating);
+    const iAmHigher = myRating >= r.oppRating;
+
+    const note = r.result === 1
+      ? (iAmHigher ? '格上勝利' : '番狂わせ')
+      : (iAmHigher ? '格下負け' : '格上負け');
+
+    const ptsStr = (r.pts >= 0 ? '+' : '') + r.pts;
+    const ptsClass = r.pts >= 0 ? 'pts-pos' : 'pts-neg';
+
+    return `<tr>
+      <td class="mono">${r.oppRating}</td>
+      <td><span class="badge ${r.result === 1 ? 'badge-w' : 'badge-l'}">${r.result === 1 ? '勝ち' : '負け'}</span></td>
+      <td>${iAmHigher ? '自分↑' : '相手↑'} <span class="mono">${diff}</span></td>
+      <td class="${ptsClass}">${ptsStr}</td>
+      <td style="font-size:12px;color:var(--text-muted)">${note}</td>
+    </tr>`;
+  }).join('');
+}
+
+function showNote(lines) {
+  const el = document.getElementById('result-note');
+  if (lines.length) {
+    el.innerHTML = lines.map(l => `<div>${l}</div>`).join('');
+    el.style.display = 'block';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+function showResult() {
+  const el = document.getElementById('result');
+  el.classList.add('show');
+}
+
+function calculateExisting() {
+  const myRating = parseFloat(document.getElementById('myRating').value);
+  if (isNaN(myRating)) return;
+
+  const rows = collectRows(myRating);
+  if (rows.length === 0) return;
+
+  const { finalChange, noteLines, wins, losses } = applyRules(myRating, rows);
+  const newRating = myRating + finalChange;
+  const changeStr = (finalChange >= 0 ? '+' : '') + finalChange;
+
+  document.getElementById('resultTitle').textContent = '計算結果';
+  document.getElementById('metrics').innerHTML = `
+    <div class="metric"><div class="metric-label">現在</div><div class="metric-val mono">${myRating}</div></div>
+    <div class="metric"><div class="metric-label">増減</div><div class="metric-val ${finalChange >= 0 ? 'pos' : 'neg'} mono">${changeStr}</div></div>
+    <div class="metric"><div class="metric-label">新レイティング</div><div class="metric-val mono">${newRating}</div></div>
+    <div class="metric"><div class="metric-label">勝敗</div><div class="metric-val">${wins.length}勝${losses.length}敗</div></div>
+  `;
+  document.getElementById('detail-body').innerHTML = renderDetail(rows, myRating);
+
+  showNote(noteLines);
+  showResult();
+
+  // 自分レイティング横の増減表示
+  const live = document.getElementById('liveChange');
+  live.style.display = '';
+  live.textContent = changeStr;
+  live.classList.remove('pos','neg');
+  live.classList.add(finalChange >= 0 ? 'pos' : 'neg');
+}
+
+function calculateNew() {
+  const rows = collectRows(FALLBACK);
+  if (rows.length === 0) return;
+
+  const wins = rows.filter(r => r.result === 1);
+  const losses = rows.filter(r => r.result === 0);
+
+  const bestWin = wins.length ? Math.max(...wins.map(r => r.oppRating)) : FALLBACK;
+  const worstLoss = losses.length ? Math.min(...losses.map(r => r.oppRating)) : FALLBACK;
+
+  const initialRating = Math.round((bestWin + worstLoss) / 2);
+
+  const noteLines = [];
+  if (wins.length === 0) noteLines.push(`全敗のため BestWin = ${FALLBACK}（デフォルト値）として計算しています。`);
+  if (losses.length === 0) noteLines.push(`全勝のため WorstLoss = ${FALLBACK}（デフォルト値）として計算しています。`);
+  noteLines.push(`初期レイティング = (BestWin ${bestWin} + WorstLoss ${worstLoss}) / 2 = ${initialRating}`);
+
+  const rowsRecalc = collectRows(initialRating);
+  const { finalChange, noteLines: ruleNotes } = applyRules(initialRating, rowsRecalc);
+  const finalRating = initialRating + finalChange;
+  const changeStr = (finalChange >= 0 ? '+' : '') + finalChange;
+
+  document.getElementById('resultTitle').textContent = '初参加の計算結果';
+  document.getElementById('metrics').innerHTML = `
+    <div class="metric"><div class="metric-label">初期レイティング</div><div class="metric-val blue mono">${initialRating}</div></div>
+    <div class="metric"><div class="metric-label">増減</div><div class="metric-val ${finalChange >= 0 ? 'pos' : 'neg'} mono">${changeStr}</div></div>
+    <div class="metric"><div class="metric-label">大会後</div><div class="metric-val mono">${finalRating}</div></div>
+    <div class="metric"><div class="metric-label">勝敗</div><div class="metric-val">${wins.length}勝${losses.length}敗</div></div>
+  `;
+  document.getElementById('detail-body').innerHTML = renderDetail(rowsRecalc, initialRating);
+
+  showNote([...noteLines, ...ruleNotes]);
+  showResult();
+}
+
+function updateLive() {
+  const live = document.getElementById('liveChange');
+
+  // 対戦相手がいないなら非表示
+  const hasOpp = oppIds.some(idx => {
+    const el = document.getElementById('opp-' + idx);
+    return el && el.isConnected;
+  });
+
+  if (!hasOpp) {
+    live.style.display = 'none';
+    document.getElementById('result').classList.remove('show');
+    return;
+  }
+
+  if (mode === 'new') {
+    live.style.display = 'none';
+    calculateNew();
+  } else {
+    calculateExisting();
+  }
+}
+
+function reset() {
+  document.getElementById('myRating').value = 1500;
+  document.getElementById('opponents').innerHTML = '';
+  opponentCount = 0;
+  oppIds = [];
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('liveChange').style.display = 'none';
+  addOpponent();
+  addOpponent();
+}
+
+document.getElementById('myRating').addEventListener('input', updateLive);
+
+addOpponent();
+addOpponent();
+updateLive();
+</script>
+</body>
+</html>
