@@ -256,17 +256,17 @@ input[type=number]:focus { outline: none; border-color: var(--text); }
 
 .btn-reset:hover { border-color: var(--border-strong); color: var(--text); }
 
-#myRatingInputRow {
+#myRatingRow {
   justify-content: space-between;
   flex-wrap: nowrap;
   width: 100%;
 }
 
-#myRatingInputRow input {
+#myRatingRow #myRatingInputRow {
   flex-shrink: 0;
 }
 
-#myRatingInputRow .live-box {
+#myRatingRow .live-box {
   margin-left: auto;
   flex-shrink: 0;
 }
@@ -298,16 +298,18 @@ input[type=number]:focus { outline: none; border-color: var(--text); }
   <div class="card" id="myRatingCard">
   <div class="card-label" id="myCardLabel">自分のレイティング</div>
 
-  <div class="field-row" id="myRatingInputRow">
-  <input type="number" id="myRating" placeholder="例: 1500" min="0" max="9999">
-</div>
+  <div class="field-row" id="myRatingRow">
 
-<div class="field-row">
-  <div class="live-box">
-    <span id="liveChange" class="live-pill" style="display:none;"></span>
-    <span id="liveNewRating" class="live-pill" style="display:none;"></span>
+    <div id="myRatingInputRow">
+      <input type="number" id="myRating" placeholder="例: 1500" min="0" max="9999">
+    </div>
+
+    <div class="live-box">
+      <span id="liveChange" class="live-pill" style="display:none;"></span>
+      <span id="liveNewRating" class="live-pill" style="display:none;"></span>
+    </div>
+
   </div>
-</div>
 </div>
  
   <div id="opponents"></div>
