@@ -380,6 +380,29 @@ input::placeholder {
   margin-left: auto;
   flex-shrink: 0;
 }
+
+.btn-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.btn-wl {
+  padding: 5px 10px;   /* ←少し縮める */
+  font-size: 11px;     /* ←文字小さく */
+  white-space: nowrap; /* ←改行防止 */
+  line-height: 1;
+}
+
+.opp-card {
+  flex-wrap: nowrap;
+  overflow: hidden;    /* ←はみ出し防止 */
+}
+
+.opp-card input[type=number] {
+  width: 100px;
+}
+  
 </style>
 </head>
 
