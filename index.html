@@ -272,15 +272,19 @@ input[type=number]:focus { outline: none; border-color: var(--text); }
   </div>
 
   <div class="card" id="myRatingCard">
-    <div class="card-label">自分のレイティング</div>
-    <div class="field-row">
-      <input type="number" id="myRating" placeholder="例: 1500" min="0" max="9999">
-      <div class="live-box">
-        <span id="liveChange" class="live-pill" style="display:none;"></span>
-        <span id="liveNewRating" class="live-pill" style="display:none;"></span>
-      </div>
+  <div class="card-label" id="myCardLabel">自分のレイティング</div>
+
+  <div class="field-row" id="myRatingInputRow">
+    <input type="number" id="myRating" placeholder="例: 1500" min="0" max="9999">
+  </div>
+
+  <div class="field-row">
+    <div class="live-box">
+      <span id="liveChange" class="live-pill" style="display:none;"></span>
+      <span id="liveNewRating" class="live-pill" style="display:none;"></span>
     </div>
   </div>
+</div>
 
   <div class="card" id="newPlayerCard" style="display:none;">
     <div class="card-label">初参加モード</div>
@@ -328,8 +332,16 @@ function setMode(m) {
     t.classList.toggle('active', (i === 0 && m === 'existing') || (i === 1 && m === 'new'));
   });
 
-  document.getElementById('myRatingCard').style.display = m === 'existing' ? '' : 'none';
   document.getElementById('newPlayerCard').style.display = m === 'new' ? '' : 'none';
+
+  // ここが追加
+  if (m === "new") {
+    document.getElementById("myCardLabel").textContent = "初参加 結果";
+    document.getElementById("myRatingInputRow").style.display = "none";
+  } else {
+    document.getElementById("myCardLabel").textContent = "自分のレイティング";
+    document.getElementById("myRatingInputRow").style.display = "";
+  }
 
   updateAll();
 }
@@ -540,9 +552,7 @@ function updateLiveNew(initialRating, totalRaw, finalChange, rule) {
 
 function updateAll() {
   // 初参加モード
-  if (mode === "new") {
-    // 初参加モードでも上部表示を出すため、myRatingCardのpillを使う
-    document.getElementById("myRatingCard").style.display = "";
+  if (mode === "new") 
 
     const rowsFallback = collectRows(FALLBACK);
     updateOpponentPts(rowsFallback);
