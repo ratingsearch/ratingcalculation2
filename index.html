@@ -516,12 +516,6 @@ function updateLiveDisplay(labelText, finalChange, newRating) {
 }
 
 function updateLiveExisting(myRating, totalRaw, finalChange, rule) {
-  // 普段は「+12」だけ
-  // ルール発動時だけ「raw→最終」+表記
-  if (rule === "normal") {
-    updateLiveDisplay("", finalChange, myRating + finalChange);
-    return;
-  }
 
   const rawStr = (totalRaw >= 0 ? "+" : "") + totalRaw;
   const finalStr = (finalChange >= 0 ? "+" : "") + finalChange;
@@ -532,10 +526,12 @@ function updateLiveExisting(myRating, totalRaw, finalChange, rule) {
   liveChange.style.display = "";
   liveNew.style.display = "";
 
-  if (rule === "alpha") {
-    liveChange.textContent = `raw ${rawStr} → ${finalStr} (切り捨て)`;
+  if (rule === "normal") {
+    liveChange.textContent = finalStr;
+  } else if (rule === "alpha") {
+    liveChange.textContent = `${rawStr} → 0（切捨）`;
   } else if (rule === "beta") {
-    liveChange.textContent = `raw ${rawStr} → ${finalStr} (再計算)`;
+    liveChange.textContent = `${rawStr} → ${finalStr}（再計算）`;
   }
 
   liveNew.textContent = `→ ${myRating + finalChange}`;
@@ -545,6 +541,7 @@ function updateLiveExisting(myRating, totalRaw, finalChange, rule) {
 }
 
 function updateLiveNew(initialRating, totalRaw, finalChange, rule) {
+
   const rawStr = (totalRaw >= 0 ? "+" : "") + totalRaw;
   const finalStr = (finalChange >= 0 ? "+" : "") + finalChange;
 
@@ -557,9 +554,9 @@ function updateLiveNew(initialRating, totalRaw, finalChange, rule) {
   if (rule === "normal") {
     liveChange.textContent = `初期 ${initialRating} / ${finalStr}`;
   } else if (rule === "alpha") {
-    liveChange.textContent = `初期 ${initialRating} / raw ${rawStr} → ${finalStr} (切り捨て)`;
+    liveChange.textContent = `初期 ${initialRating} / ${rawStr} → 0（切捨）`;
   } else if (rule === "beta") {
-    liveChange.textContent = `初期 ${initialRating} / raw ${rawStr} → ${finalStr} (再計算)`;
+    liveChange.textContent = `初期 ${initialRating} / ${rawStr} → ${finalStr}（再計算）`;
   }
 
   liveNew.textContent = `→ ${initialRating + finalChange}`;
