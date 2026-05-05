@@ -400,28 +400,28 @@ input::placeholder {
     <button class="tab" onclick="setMode('new')">初参加（レイティングなし）</button>
   </div>
 
-  <div class="card" id="myRatingCard">
-    <div class="card-label" id="myCardLabel">自分のレイティングポイント</div>
+<div class="card" id="newPlayerCard" style="display:none;">
+  <div class="card-label">初参加モード</div>
+  <p style="font-size:12px;color:var(--text-muted);line-height:1.8;">
+    対戦結果から初期レイティングを自動推定します。<br>
+    全勝・全敗の場合は片方を 1800 として計算します。
+  </p>
+</div>
 
-    <div class="field-row" id="myRatingRow">
-      <div id="myRatingInputRow">
-        <input type="number" id="myRating" placeholder="例：1800" min="0" max="9999">
-      </div>
+<div class="card" id="myRatingCard">
+  <div class="card-label" id="myCardLabel">自分のレイティングポイント</div>
 
-      <div class="live-box">
-        <span id="liveChange" class="live-pill" style="display:none;"></span>
-        <span id="liveNewRating" class="live-pill" style="display:none;"></span>
-      </div>
+  <div class="field-row" id="myRatingRow">
+    <div id="myRatingInputRow">
+      <input type="number" id="myRating" placeholder="例：1800" min="0" max="9999">
+    </div>
+
+    <div class="live-box">
+      <span id="liveChange" class="live-pill" style="display:none;"></span>
+      <span id="liveNewRating" class="live-pill" style="display:none;"></span>
     </div>
   </div>
-
-  <div class="card" id="newPlayerCard" style="display:none;">
-    <div class="card-label">初参加モード</div>
-    <p style="font-size:12px;color:var(--text-muted);line-height:1.8;">
-      対戦結果から初期レイティングを自動推定します。<br>
-      全勝・全敗の場合は片方を 1800 として計算します。
-    </p>
-  </div>
+</div>
 
   <div id="opponents"></div>
 
