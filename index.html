@@ -423,7 +423,6 @@ function applyRules(myRating, rows) {
 
   const totalRaw = rows.reduce((s, r) => s + r.pts, 0);
   let finalChange = totalRaw;
-
   let rule = "normal"; // normal / alpha / beta
 
   if (Math.abs(totalRaw) <= ALPHA) {
@@ -470,35 +469,69 @@ function setPillStyle(el, val) {
   if (val < 0) el.classList.add("neg");
 }
 
-function updateMyLiveExisting(myRating, totalRaw, finalChange) {
+function updateLiveDisplay(labelText, finalChange, newRating) {
   const liveChange = document.getElementById("liveChange");
   const liveNew = document.getElementById("liveNewRating");
 
-  const rawStr = (totalRaw >= 0 ? "+" : "") + totalRaw;
   const finalStr = (finalChange >= 0 ? "+" : "") + finalChange;
 
   liveChange.style.display = "";
   liveNew.style.display = "";
 
-  // raw と 最終 を同時表示
-  liveChange.textContent = `raw ${rawStr} → 最終 ${finalStr}`;
+  liveChange.textContent = labelText ? `${finalStr} (${labelText})` : finalStr;
+  liveNew.textContent = `→ ${newRating}`;
+
+  setPillStyle(liveChange, finalChange);
+  setPillStyle(liveNew, finalChange);
+}
+
+function updateLiveExisting(myRating, totalRaw, finalChange, rule) {
+  // 普段は「+12」だけ
+  // ルール発動時だけ「raw→最終」+表記
+  if (rule === "normal") {
+    updateLiveDisplay("", finalChange, myRating + finalChange);
+    return;
+  }
+
+  const rawStr = (totalRaw >= 0 ? "+" : "") + totalRaw;
+  const finalStr = (finalChange >= 0 ? "+" : "") + finalChange;
+
+  const liveChange = document.getElementById("liveChange");
+  const liveNew = document.getElementById("liveNewRating");
+
+  liveChange.style.display = "";
+  liveNew.style.display = "";
+
+  if (rule === "alpha") {
+    liveChange.textContent = `raw ${rawStr} → ${finalStr} (切り捨て)`;
+  } else if (rule === "beta") {
+    liveChange.textContent = `raw ${rawStr} → ${finalStr} (再計算)`;
+  }
+
   liveNew.textContent = `→ ${myRating + finalChange}`;
 
   setPillStyle(liveChange, finalChange);
   setPillStyle(liveNew, finalChange);
 }
 
-function updateMyLiveNew(initialRating, totalRaw, finalChange) {
-  const liveChange = document.getElementById("liveChange");
-  const liveNew = document.getElementById("liveNewRating");
-
+function updateLiveNew(initialRating, totalRaw, finalChange, rule) {
   const rawStr = (totalRaw >= 0 ? "+" : "") + totalRaw;
   const finalStr = (finalChange >= 0 ? "+" : "") + finalChange;
+
+  const liveChange = document.getElementById("liveChange");
+  const liveNew = document.getElementById("liveNewRating");
 
   liveChange.style.display = "";
   liveNew.style.display = "";
 
-  liveChange.textContent = `初期 ${initialRating} / raw ${rawStr} → 最終 ${finalStr}`;
+  if (rule === "normal") {
+    liveChange.textContent = `初期 ${initialRating} / ${finalStr}`;
+  } else if (rule === "alpha") {
+    liveChange.textContent = `初期 ${initialRating} / raw ${rawStr} → ${finalStr} (切り捨て)`;
+  } else if (rule === "beta") {
+    liveChange.textContent = `初期 ${initialRating} / raw ${rawStr} → ${finalStr} (再計算)`;
+  }
+
   liveNew.textContent = `→ ${initialRating + finalChange}`;
 
   setPillStyle(liveChange, finalChange);
@@ -506,44 +539,46 @@ function updateMyLiveNew(initialRating, totalRaw, finalChange) {
 }
 
 function updateAll() {
-  // まず相手ポイント表示は現在基準で出す
-  const baseRating = mode === "new" ? FALLBACK : parseFloat(document.getElementById("myRating").value);
-
-  if (mode === "existing" && isNaN(baseRating)) {
-    updateOpponentPts([]);
-    document.getElementById("liveChange").style.display = "none";
-    document.getElementById("liveNewRating").style.display = "none";
-    return;
-  }
-
-  const rowsBase = collectRows(baseRating);
-  updateOpponentPts(rowsBase);
-
   // 初参加モード
   if (mode === "new") {
-    const wins = rowsBase.filter(r => r.result === 1);
-    const losses = rowsBase.filter(r => r.result === 0);
+    // 初参加モードでも上部表示を出すため、myRatingCardのpillを使う
+    document.getElementById("myRatingCard").style.display = "";
+
+    const rowsFallback = collectRows(FALLBACK);
+    updateOpponentPts(rowsFallback);
+
+    const wins = rowsFallback.filter(r => r.result === 1);
+    const losses = rowsFallback.filter(r => r.result === 0);
 
     const bestWin = wins.length ? Math.max(...wins.map(r => r.oppRating)) : FALLBACK;
     const worstLoss = losses.length ? Math.min(...losses.map(r => r.oppRating)) : FALLBACK;
 
     const initialRating = Math.round((bestWin + worstLoss) / 2);
 
-    // 初期値で再計算
     const rowsRecalc = collectRows(initialRating);
     updateOpponentPts(rowsRecalc);
 
-    const { totalRaw, finalChange } = applyRules(initialRating, rowsRecalc);
+    const { totalRaw, finalChange, rule } = applyRules(initialRating, rowsRecalc);
 
-    updateMyLiveNew(initialRating, totalRaw, finalChange);
+    updateLiveNew(initialRating, totalRaw, finalChange, rule);
     return;
   }
 
   // レイティングありモード
-  const myRating = baseRating;
+  const myRating = parseFloat(document.getElementById("myRating").value);
 
-  const { totalRaw, finalChange } = applyRules(myRating, rowsBase);
-  updateMyLiveExisting(myRating, totalRaw, finalChange);
+  if (isNaN(myRating)) {
+    updateOpponentPts([]);
+    document.getElementById("liveChange").style.display = "none";
+    document.getElementById("liveNewRating").style.display = "none";
+    return;
+  }
+
+  const rows = collectRows(myRating);
+  updateOpponentPts(rows);
+
+  const { totalRaw, finalChange, rule } = applyRules(myRating, rows);
+  updateLiveExisting(myRating, totalRaw, finalChange, rule);
 }
 
 function resetAll() {
