@@ -593,10 +593,18 @@ if (mode === "new") {
   }
 
   const rows = collectRows(myRating);
-  updateOpponentPts(rows);
 
-  const { totalRaw, finalChange, rule } = applyRules(myRating, rows);
-  updateLiveExisting(myRating, totalRaw, finalChange, rule);
+if (rows.length === 0) {
+  updateOpponentPts([]);
+  document.getElementById("liveChange").style.display = "none";
+  document.getElementById("liveNewRating").style.display = "none";
+  return;
+}
+
+updateOpponentPts(rows);
+
+const { totalRaw, finalChange, rule } = applyRules(myRating, rows);
+updateLiveExisting(myRating, totalRaw, finalChange, rule);
 }
 
 function resetAll() {
