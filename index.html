@@ -271,6 +271,14 @@ input[type=number]:focus { outline: none; border-color: var(--text); }
     <button class="tab" onclick="setMode('new')">初参加（レイティングなし）</button>
   </div>
 
+  <div class="card" id="newPlayerCard" style="display:none;">
+    <div class="card-label">初参加モード</div>
+    <p style="font-size:12px;color:var(--text-muted);line-height:1.8;">
+      対戦結果から初期レイティングを自動推定します。<br>
+      全勝・全敗の場合は片方を 1800 として計算します。
+    </p>
+  </div>
+
   <div class="card" id="myRatingCard">
   <div class="card-label" id="myCardLabel">自分のレイティング</div>
 
@@ -285,15 +293,7 @@ input[type=number]:focus { outline: none; border-color: var(--text); }
     </div>
   </div>
 </div>
-
-  <div class="card" id="newPlayerCard" style="display:none;">
-    <div class="card-label">初参加モード</div>
-    <p style="font-size:12px;color:var(--text-muted);line-height:1.8;">
-      対戦結果から初期レイティングを自動推定します。<br>
-      全勝・全敗の場合は片方を 1800 として計算します。
-    </p>
-  </div>
-
+  
   <div id="opponents"></div>
 
   <button class="add-btn" onclick="addOpponent()">＋ 対戦相手を追加（最大13人）</button>
@@ -552,27 +552,35 @@ function updateLiveNew(initialRating, totalRaw, finalChange, rule) {
 
 function updateAll() {
   // 初参加モード
-  if (mode === "new")  {
+if (mode === "new") {
+  const rowsFallback = collectRows(FALLBACK);
 
-    const rowsFallback = collectRows(FALLBACK);
-    updateOpponentPts(rowsFallback);
-
-    const wins = rowsFallback.filter(r => r.result === 1);
-    const losses = rowsFallback.filter(r => r.result === 0);
-
-    const bestWin = wins.length ? Math.max(...wins.map(r => r.oppRating)) : FALLBACK;
-    const worstLoss = losses.length ? Math.min(...losses.map(r => r.oppRating)) : FALLBACK;
-
-    const initialRating = Math.round((bestWin + worstLoss) / 2);
-
-    const rowsRecalc = collectRows(initialRating);
-    updateOpponentPts(rowsRecalc);
-
-    const { totalRaw, finalChange, rule } = applyRules(initialRating, rowsRecalc);
-
-    updateLiveNew(initialRating, totalRaw, finalChange, rule);
+  // ★ 相手レイティングが1人も入ってないなら表示を消して終了
+  if (rowsFallback.length === 0) {
+    updateOpponentPts([]);
+    document.getElementById("liveChange").style.display = "none";
+    document.getElementById("liveNewRating").style.display = "none";
     return;
   }
+
+  updateOpponentPts(rowsFallback);
+
+  const wins = rowsFallback.filter(r => r.result === 1);
+  const losses = rowsFallback.filter(r => r.result === 0);
+
+  const bestWin = wins.length ? Math.max(...wins.map(r => r.oppRating)) : FALLBACK;
+  const worstLoss = losses.length ? Math.min(...losses.map(r => r.oppRating)) : FALLBACK;
+
+  const initialRating = Math.round((bestWin + worstLoss) / 2);
+
+  const rowsRecalc = collectRows(initialRating);
+  updateOpponentPts(rowsRecalc);
+
+  const { totalRaw, finalChange, rule } = applyRules(initialRating, rowsRecalc);
+
+  updateLiveNew(initialRating, totalRaw, finalChange, rule);
+  return;
+}
 
   // レイティングありモード
   const myRating = parseFloat(document.getElementById("myRating").value);
