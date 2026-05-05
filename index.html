@@ -386,7 +386,7 @@ function addOpponent() {
   div.innerHTML = `
     <span class="opp-num">#${String(oppIds.length).padStart(2,'0')}</span>
 
-    <input type="number" id="oppRating-${idx}" placeholder="相手レイティング" min="0" max="9999">
+    <input type="number" id="oppRating-${idx}" placeholder="相手のレイティング" min="0" max="9999">
 
     <div class="btn-group">
       <button class="btn-wl win active" id="btnWin-${idx}" onclick="setResult(${idx}, 1)">勝ち</button>
@@ -573,7 +573,7 @@ function updateAll() {
 if (mode === "new") {
   const rowsFallback = collectRows(FALLBACK);
 
-  // ★ 相手レイティングが1人も入ってないなら表示を消して終了
+  // ★ 相手のレイティングが1人も入ってないなら表示を消して終了
   if (rowsFallback.length === 0) {
     updateOpponentPts([]);
     document.getElementById("liveChange").style.display = "none";
