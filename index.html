@@ -176,15 +176,15 @@ input[type=number]:focus { outline: none; border-color: var(--text); }
 
 .btn-group {
   display: flex;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  overflow: hidden;
+  gap: 8px;
+  border: none;
 }
 
 .btn-wl {
   padding: 7px 12px;
-  border: none;
-  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
   cursor: pointer;
   font-size: 12px;
   font-weight: 700;
@@ -393,8 +393,8 @@ function addOpponent() {
     <input type="number" id="oppRating-${idx}" placeholder="相手のポイント" min="0" max="9999">
 
     <div class="btn-group">
-      <button class="btn-wl win active" id="btnWin-${idx}" onclick="setResult(${idx}, 1)">勝ち</button>
-      <button class="btn-wl lose" id="btnLose-${idx}" onclick="setResult(${idx}, 0)">負け</button>
+  <button class="btn-wl win active" id="btnWin-${idx}" onclick="setResult(${idx}, 1)">〇勝ち</button>
+  <button class="btn-wl lose" id="btnLose-${idx}" onclick="setResult(${idx}, 0)">×負け</button>
     </div>
 
     <div class="pts-view zero" id="pts-${idx}"></div>
