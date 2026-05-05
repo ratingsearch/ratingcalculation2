@@ -272,7 +272,7 @@ input[type=number]:focus { outline: none; border-color: var(--text); }
 }
 
 #myRating {
-  width: 70px;
+  width: 90px;
 }
   
 </style>
@@ -300,12 +300,12 @@ input[type=number]:focus { outline: none; border-color: var(--text); }
   </div>
 
   <div class="card" id="myRatingCard">
-  <div class="card-label" id="myCardLabel">自分のレイティング</div>
+  <div class="card-label" id="myCardLabel">自分のレイティングポイント</div>
 
   <div class="field-row" id="myRatingRow">
 
     <div id="myRatingInputRow">
-      <input type="number" id="myRating" placeholder="1800" min="0" max="9999">
+      <input type="number" id="myRating" placeholder="例：1800" min="0" max="9999">
     </div>
 
     <div class="live-box">
@@ -390,14 +390,14 @@ function addOpponent() {
   div.innerHTML = `
     <span class="opp-num">#${String(oppIds.length).padStart(2,'0')}</span>
 
-    <input type="number" id="oppRating-${idx}" placeholder="相手のレイティング" min="0" max="9999">
+    <input type="number" id="oppRating-${idx}" placeholder="相手のポイント" min="0" max="9999">
 
     <div class="btn-group">
       <button class="btn-wl win active" id="btnWin-${idx}" onclick="setResult(${idx}, 1)">勝ち</button>
       <button class="btn-wl lose" id="btnLose-${idx}" onclick="setResult(${idx}, 0)">負け</button>
     </div>
 
-    <div class="pts-view zero" id="pts-${idx}">0</div>
+    <div class="pts-view zero" id="pts-${idx}"></div>
   `;
 
   document.getElementById('opponents').appendChild(div);
