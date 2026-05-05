@@ -274,6 +274,17 @@ input[type=number]:focus { outline: none; border-color: var(--text); }
 #myRating {
   width: 90px;
 }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+  
   
 </style>
 </head>
@@ -478,7 +489,7 @@ function updateOpponentPts(rows) {
   for (const idx of oppIds) {
     const el = document.getElementById(`pts-${idx}`);
     if (!el) continue;
-    el.textContent = "0";
+    el.textContent = "";
     el.className = "pts-view zero";
   }
 
