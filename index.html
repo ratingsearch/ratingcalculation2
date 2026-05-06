@@ -172,24 +172,32 @@ input::placeholder { font-size: 12px; }
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: nowrap;
   overflow: hidden;
 }
 
-.opp-card input[type=number] { width: 100px; flex-shrink: 0; }
+.opp-card input[type=number] {
+  width: 100px;
+  flex-shrink: 0;
+}
 
 .opp-num {
   font-size: 11px;
   font-weight: 900;
   font-family: 'DM Mono', monospace;
   color: var(--text-muted);
-  min-width: 34px;
+  min-width: 28px;
   flex-shrink: 0;
 }
 
 /* 勝敗ボタン */
-.btn-group { display: flex; gap: 6px; flex-wrap: nowrap; flex-shrink: 0; }
+.btn-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
 
 .btn-wl {
   -webkit-appearance: none;
@@ -197,8 +205,8 @@ input::placeholder { font-size: 12px; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 10px;
-  font-size: 11px;
+  padding: 10px 14px;
+  font-size: 14px;
   font-weight: 900;
   line-height: 1;
   border: 1.5px solid var(--border);
@@ -221,14 +229,10 @@ input::placeholder { font-size: 12px; }
   font-size: 14px;
   font-weight: 900;
   font-family: 'DM Mono', monospace;
-  min-width: 60px;
+  min-width: 52px;
   text-align: right;
   flex-shrink: 0;
 }
-
-.pts-view.pos { color: var(--accent); }
-.pts-view.neg { color: var(--red); }
-.pts-view.zero { color: var(--text-muted); }
 
 /* ボタン類 */
 .add-btn {
@@ -268,13 +272,21 @@ input::placeholder { font-size: 12px; }
   width: 100%;
 }
 
-/* スマホ対応 */
+/* スマホ対応 — 折り返しなし */
 @media (max-width: 520px) {
-  .opp-card { flex-wrap: wrap; }
-  .opp-card input[type=number] { width: 110px; }
-  .btn-group { width: 100%; }
-  .btn-wl { flex: 1; text-align: center; }
-  .pts-view { margin-left: 0; text-align: left; min-width: auto; }
+  .opp-card {
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding: 12px 10px;
+  }
+
+  .opp-card input[type=number] {
+    width: 84px;
+  }
+
+  .pts-view {
+    min-width: 44px;
+  }
 }
   
 </style>　
