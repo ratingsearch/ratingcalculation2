@@ -351,17 +351,20 @@ header {
 
 @media (max-width: 520px) {
   .btn-wl {
-    padding: 3px 6px;   /* 余白をかなり削る */
+    padding: 4px 8px;
     font-size: 12px;
-    min-width: 0;
-    flex: 1;            /* 横いっぱい使わせる */
+    line-height: 1;
+    border-radius: 999px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .btn-group {
-    gap: 4px;
+    flex-wrap: nowrap;
   }
 }
-  
 </style>
 </head>
 
