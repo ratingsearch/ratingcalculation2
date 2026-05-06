@@ -19,20 +19,14 @@
   --bg: #f4f6f9;
   --card: #ffffff;
   --border: #e2e6ed;
-  --border-strong: #e2e6ed;
-
   --text: #1a1e2e;
   --text-muted: #6b7280;
-
   --accent: #1a56db;
   --accent-light: #eff4ff;
-
   --red: #e02424;
   --red-light: #fff5f5;
-
   --tab-active-bg: #111827;
   --tab-active-text: #ffffff;
-
   --radius: 16px;
   --radius-sm: 10px;
 }
@@ -48,7 +42,6 @@ body {
   line-height: 1.6;
 }
 
-/* ===== header (検索ツールと統一) ===== */
 header {
   background: var(--tab-active-bg);
   padding: 20px 24px;
@@ -69,18 +62,8 @@ header {
   flex-shrink: 0;
 }
 
-.header-text h1 {
-  font-size: 16px;
-  font-weight: 700;
-  color: white;
-  letter-spacing: .04em;
-}
-
-.header-text p {
-  font-size: 11px;
-  color: #9ca3af;
-  margin-top: 2px;
-}
+.header-text h1 { font-size: 16px; font-weight: 700; color: white; letter-spacing: .04em; }
+.header-text p { font-size: 11px; color: #9ca3af; margin-top: 2px; }
 
 .container {
   max-width: 680px;
@@ -88,7 +71,7 @@ header {
   padding: 24px 16px 60px;
 }
 
-/* ===== tabs ===== */
+/* タブ */
 .mode-tabs {
   display: flex;
   background: var(--card);
@@ -111,16 +94,10 @@ header {
   text-align: center;
 }
 
-.tab.active {
-  background: var(--tab-active-bg);
-  color: var(--tab-active-text);
-}
+.tab.active { background: var(--tab-active-bg); color: var(--tab-active-text); }
+.tab:not(:last-child) { border-right: 1px solid var(--border); }
 
-.tab:not(:last-child) {
-  border-right: 1px solid var(--border);
-}
-
-/* ===== card ===== */
+/* カード */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -138,7 +115,7 @@ header {
   margin-bottom: 12px;
 }
 
-/* ===== input row ===== */
+/* 入力 */
 .field-row {
   display: flex;
   align-items: center;
@@ -147,54 +124,29 @@ header {
 }
 
 input[type=number] {
-  width: 120px;
   padding: 10px 12px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
-  font-size: 16px;
+  font-size: 16px; /* iPhoneズーム対策で16px固定 */
   font-family: 'DM Mono', monospace;
   font-weight: 700;
   background: white;
   color: var(--text);
   outline: none;
   transition: border-color .15s;
-}
-
-input[type=number]:focus {
-  border-color: var(--accent);
-}
-
-/* iPhoneズーム対策 */
-input[type=number] {
-  font-size: 16px;
-}
-
-#myRating {
-  width: 90px;
-}
-
-/* スピンボタン消す（PCの矢印不要） */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type=number] {
+  /* スピンボタン非表示 */
   -moz-appearance: textfield;
 }
 
-input::placeholder {
-  font-size: 12px;
-}
+input[type=number]:focus { border-color: var(--accent); }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input::placeholder { font-size: 12px; }
 
-/* ===== live pills ===== */
-.live-box {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-left: auto;
-}
+#myRating { width: 90px; }
+
+/* ライブ表示 */
+.live-box { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
 
 .live-pill {
   font-size: 13px;
@@ -208,19 +160,10 @@ input::placeholder {
   white-space: nowrap;
 }
 
-.live-pill.pos {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--accent-light);
-}
+.live-pill.pos { color: var(--accent); border-color: var(--accent); background: var(--accent-light); }
+.live-pill.neg { color: var(--red); border-color: var(--red); background: var(--red-light); }
 
-.live-pill.neg {
-  color: var(--red);
-  border-color: var(--red);
-  background: var(--red-light);
-}
-
-/* ===== opponent card ===== */
+/* 対戦相手カード */
 .opp-card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -230,7 +173,11 @@ input::placeholder {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
+
+.opp-card input[type=number] { width: 100px; flex-shrink: 0; }
 
 .opp-num {
   font-size: 11px;
@@ -238,38 +185,37 @@ input::placeholder {
   font-family: 'DM Mono', monospace;
   color: var(--text-muted);
   min-width: 34px;
+  flex-shrink: 0;
 }
 
-.btn-group {
-  display: flex;
-  gap: 8px;
-}
+/* 勝敗ボタン */
+.btn-group { display: flex; gap: 6px; flex-wrap: nowrap; flex-shrink: 0; }
 
 .btn-wl {
-  padding: 7px 12px;
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
   border: 1.5px solid var(--border);
   border-radius: 999px;
   background: white;
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 900;
   color: var(--text-muted);
+  white-space: nowrap;
+  flex: 0 0 auto;
   transition: all .15s;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.btn-wl.active.win {
-  background: var(--accent-light);
-  border-color: var(--accent);
-  color: var(--accent);
-}
+.btn-wl.active.win { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+.btn-wl.active.lose { background: var(--red-light); border-color: var(--red); color: var(--red); }
 
-.btn-wl.active.lose {
-  background: var(--red-light);
-  border-color: var(--red);
-  color: var(--red);
-}
-
-/* ===== opponent pts ===== */
+/* ポイント表示 */
 .pts-view {
   margin-left: auto;
   font-size: 14px;
@@ -277,13 +223,14 @@ input::placeholder {
   font-family: 'DM Mono', monospace;
   min-width: 60px;
   text-align: right;
+  flex-shrink: 0;
 }
 
 .pts-view.pos { color: var(--accent); }
 .pts-view.neg { color: var(--red); }
 .pts-view.zero { color: var(--text-muted); }
 
-/* ===== buttons ===== */
+/* ボタン類 */
 .add-btn {
   width: 100%;
   padding: 12px;
@@ -298,9 +245,7 @@ input::placeholder {
   margin-bottom: 14px;
 }
 
-.add-btn:hover {
-  background: var(--bg);
-}
+.add-btn:hover { background: var(--bg); }
 
 .btn-reset {
   width: 100%;
@@ -314,136 +259,22 @@ input::placeholder {
   cursor: pointer;
 }
 
-.btn-reset:hover {
-  background: var(--bg);
-  border-color: var(--border-strong);
-  color: var(--text);
-}
+.btn-reset:hover { background: var(--bg); border-color: var(--border); color: var(--text); }
 
-/* ===== my rating row ===== */
+/* マイレーティング行 */
 #myRatingRow {
   justify-content: space-between;
   flex-wrap: nowrap;
   width: 100%;
 }
 
-#myRatingRow #myRatingInputRow {
-  flex-shrink: 0;
-}
-
-#myRatingRow .live-box {
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
+/* スマホ対応 */
 @media (max-width: 520px) {
-  .opp-card {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .pts-view {
-    margin-left: 0;
-    text-align: left;
-    min-width: auto;
-  }
-
-  .btn-group {
-    width: 100%;
-  }
-
-  .btn-wl {
-    flex: 1;
-    text-align: center;
-  }
-}
-
-.opp-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: nowrap;   /* ←これが重要 */
-}
-
-.opp-card input[type=number] {
-  width: 120px;
-  flex-shrink: 0;
-}
-
-.btn-group {
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.pts-view {
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-.btn-group {
-  display: flex;
-  gap: 6px;
-  flex-wrap: nowrap;
-}
-
-.btn-wl {
-  padding: 5px 10px;   /* ←少し縮める */
-  font-size: 11px;     /* ←文字小さく */
-  white-space: nowrap; /* ←改行防止 */
-  line-height: 1;
-}
-
-.opp-card {
-  flex-wrap: nowrap;
-  overflow: hidden;    /* ←はみ出し防止 */
-}
-
-.opp-card input[type=number] {
-  width: 100px;
-}
-
-.btn-wl {
-  -webkit-appearance: none;
-  appearance: none;
-
-  padding: 4px 10px;
-  font-size: 11px;
-  line-height: 1;
-  border-radius: 999px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  white-space: nowrap;
-  transform: scale(1);
-}
-
-.btn-wl,
-.btn-wl:focus,
-.btn-wl:active {
-  -webkit-tap-highlight-color: transparent;
-}
-
-.btn-wl {
-  -webkit-appearance: none;
-  appearance: none;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 3px 8px;
-  font-size: 11px;
-  line-height: 1;
-
-  width: auto;
-  min-width: 0;        /* ←これ重要 */
-  flex: 0 0 auto;      /* ←伸び防止 */
-
-  border-radius: 999px;
-  white-space: nowrap;
+  .opp-card { flex-wrap: wrap; }
+  .opp-card input[type=number] { width: 110px; }
+  .btn-group { width: 100%; }
+  .btn-wl { flex: 1; text-align: center; }
+  .pts-view { margin-left: 0; text-align: left; min-width: auto; }
 }
   
 </style>　
