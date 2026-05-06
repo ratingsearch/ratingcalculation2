@@ -19,7 +19,7 @@
   --bg: #f4f6f9;
   --card: #ffffff;
   --border: #e2e6ed;
-  --border-strong: #cbd5e1;
+  --border-strong: #e2e6ed;
 
   --text: #1a1e2e;
   --text-muted: #6b7280;
@@ -37,263 +37,20 @@
   --radius-sm: 10px;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: 'Noto Sans JP', sans-serif;
   background: var(--bg);
   color: var(--text);
+  min-height: 100vh;
   font-size: 14px;
   line-height: 1.6;
 }
 
-/* ===== header ===== */
+/* ===== header (検索ツールと統一) ===== */
 header {
   background: var(--tab-active-bg);
-  padding: 18px 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-header h1 {
-  font-size: 16px;
-  color: white;
-}
-
-header p {
-  font-size: 11px;
-  color: #9ca3af;
-}
-
-/* ===== container ===== */
-.container {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 20px 14px 60px;
-}
-
-/* ===== tabs ===== */
-.mode-tabs {
-  display: flex;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  margin-bottom: 14px;
-}
-
-.tab {
-  flex: 1;
-  padding: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  text-align: center;
-}
-
-.tab.active {
-  background: var(--tab-active-bg);
-  color: var(--tab-active-text);
-}
-
-/* ===== card ===== */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 10px;
-}
-
-.card-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-  letter-spacing: .08em;
-}
-
-/* ===== input ===== */
-input[type=number] {
-  width: 110px;
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-size: 16px;
-  font-weight: 700;
-  background: #fff;
-  color: var(--text);
-  outline: none;
-}
-
-input[type=number]:focus {
-  border-color: var(--accent);
-}
-
-/* iPhoneズーム対策 */
-input[type=number] {
-  font-size: 16px;
-}
-
-/* placeholder */
-input::placeholder {
-  font-size: 12px;
-  color: #94a3b8;
-}
-
-/* ===== my rating row ===== */
-#myRatingRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: nowrap;
-}
-
-#myRatingInputRow {
-  flex-shrink: 0;
-}
-
-.live-box {
-  display: flex;
-  gap: 8px;
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-/* ===== pills ===== */
-.live-pill {
-  font-size: 13px;
-  font-weight: 900;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: #fff;
-  white-space: nowrap;
-}
-
-.live-pill.pos {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--accent-light);
-}
-
-.live-pill.neg {
-  color: var(--red);
-  border-color: var(--red);
-  background: var(--red-light);
-}
-
-/* ===== opponent ===== */
-.opp-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: #fff;
-  overflow: hidden;
-}
-
-.opp-num {
-  font-size: 11px;
-  font-weight: 900;
-  color: var(--text-muted);
-  min-width: 32px;
-}
-
-/* ===== win/lose buttons ===== */
-.btn-group {
-  display: flex;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-.btn-wl {
-  all: unset;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 3px 8px;
-  font-size: 11px;
-  line-height: 1;
-
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--bg);
-
-  white-space: nowrap;
-}
-/* ===== points ===== */
-.pts-view {
-  margin-left: auto;
-  font-size: 14px;
-  font-weight: 900;
-  min-width: 60px;
-  text-align: right;
-}
-
-.pts-view.pos { color: var(--accent); }
-.pts-view.neg { color: var(--red); }
-.pts-view.zero { color: var(--text-muted); }
-
-/* ===== buttons ===== */
-.add-btn {
-  width: 100%;
-  padding: 12px;
-  border: 1px dashed var(--border-strong);
-  border-radius: var(--radius);
-  background: #fff;
-  font-weight: 700;
-  color: var(--text-muted);
-  margin-top: 10px;
-}
-
-.btn-reset {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: #fff;
-  font-weight: 900;
-  color: var(--text-muted);
-}
-
-/* ===== mobile ===== */
-@media (max-width: 520px) {
-  .opp-card {
-    flex-wrap: wrap;
-  }
-
-  .btn-group {
-    width: 100%;
-  }
-
-  .btn-wl {
-    flex: 1;
-  }
-
-  .pts-view {
-    margin-left: 0;
-    text-align: left;
-  }
-}
-
-:root {
-  --hdr: #111827;
-  --accent: #1a56db;
-}
-
-header {
-  background: var(--hdr);
   padding: 20px 24px;
   display: flex;
   align-items: center;
@@ -325,23 +82,371 @@ header {
   margin-top: 2px;
 }
 
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+}
+
+/* ===== tabs ===== */
+.mode-tabs {
+  display: flex;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.tab {
+  flex: 1;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  transition: all 0.15s;
+  text-align: center;
+}
+
+.tab.active {
+  background: var(--tab-active-bg);
+  color: var(--tab-active-text);
+}
+
+.tab:not(:last-child) {
+  border-right: 1px solid var(--border);
+}
+
+/* ===== card ===== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 12px;
+}
+
+.card-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* ===== input row ===== */
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+input[type=number] {
+  width: 120px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  background: white;
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s;
+}
+
+input[type=number]:focus {
+  border-color: var(--accent);
+}
+
+/* iPhoneズーム対策 */
+input[type=number] {
+  font-size: 16px;
+}
+
+#myRating {
+  width: 90px;
+}
+
+/* スピンボタン消す（PCの矢印不要） */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input::placeholder {
+  font-size: 12px;
+}
+
+/* ===== live pills ===== */
+.live-box {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.live-pill {
+  font-size: 13px;
+  font-weight: 900;
+  font-family: 'DM Mono', monospace;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.live-pill.pos {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.live-pill.neg {
+  color: var(--red);
+  border-color: var(--red);
+  background: var(--red-light);
+}
+
+/* ===== opponent card ===== */
+.opp-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.opp-num {
+  font-size: 11px;
+  font-weight: 900;
+  font-family: 'DM Mono', monospace;
+  color: var(--text-muted);
+  min-width: 34px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-wl {
+  padding: 7px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: white;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--text-muted);
+  transition: all .15s;
+}
+
+.btn-wl.active.win {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-wl.active.lose {
+  background: var(--red-light);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* ===== opponent pts ===== */
+.pts-view {
+  margin-left: auto;
+  font-size: 14px;
+  font-weight: 900;
+  font-family: 'DM Mono', monospace;
+  min-width: 60px;
+  text-align: right;
+}
+
+.pts-view.pos { color: var(--accent); }
+.pts-view.neg { color: var(--red); }
+.pts-view.zero { color: var(--text-muted); }
+
+/* ===== buttons ===== */
+.add-btn {
+  width: 100%;
+  padding: 12px;
+  background: white;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-top: 8px;
+  margin-bottom: 14px;
+}
+
+.add-btn:hover {
+  background: var(--bg);
+}
+
+.btn-reset {
+  width: 100%;
+  padding: 12px 20px;
+  background: white;
+  color: var(--text-muted);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.btn-reset:hover {
+  background: var(--bg);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+/* ===== my rating row ===== */
+#myRatingRow {
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+#myRatingRow #myRatingInputRow {
+  flex-shrink: 0;
+}
+
+#myRatingRow .live-box {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
 @media (max-width: 520px) {
-  .btn-wl {
-    padding: 4px 8px;
-    font-size: 12px;
-    line-height: 1;
-    border-radius: 999px;
-    white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  .opp-card {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .pts-view {
+    margin-left: 0;
+    text-align: left;
+    min-width: auto;
   }
 
   .btn-group {
-    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  .btn-wl {
+    flex: 1;
+    text-align: center;
   }
 }
-</style>
+
+.opp-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;   /* ←これが重要 */
+}
+
+.opp-card input[type=number] {
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.btn-group {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.pts-view {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.btn-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.btn-wl {
+  padding: 5px 10px;   /* ←少し縮める */
+  font-size: 11px;     /* ←文字小さく */
+  white-space: nowrap; /* ←改行防止 */
+  line-height: 1;
+}
+
+.opp-card {
+  flex-wrap: nowrap;
+  overflow: hidden;    /* ←はみ出し防止 */
+}
+
+.opp-card input[type=number] {
+  width: 100px;
+}
+
+.btn-wl {
+  -webkit-appearance: none;
+  appearance: none;
+
+  padding: 4px 10px;
+  font-size: 11px;
+  line-height: 1;
+  border-radius: 999px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  white-space: nowrap;
+  transform: scale(1);
+}
+
+.btn-wl,
+.btn-wl:focus,
+.btn-wl:active {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-wl {
+  -webkit-appearance: none;
+  appearance: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3px 8px;
+  font-size: 11px;
+  line-height: 1;
+
+  width: auto;
+  min-width: 0;        /* ←これ重要 */
+  flex: 0 0 auto;      /* ←伸び防止 */
+
+  border-radius: 999px;
+  white-space: nowrap;
+}
+  
+</style>　
 </head>
 
 <body>
