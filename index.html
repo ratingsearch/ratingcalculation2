@@ -425,6 +425,26 @@ input::placeholder {
 .btn-wl:active {
   -webkit-tap-highlight-color: transparent;
 }
+
+.btn-wl {
+  -webkit-appearance: none;
+  appearance: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3px 8px;
+  font-size: 11px;
+  line-height: 1;
+
+  width: auto;
+  min-width: 0;        /* ←これ重要 */
+  flex: 0 0 auto;      /* ←伸び防止 */
+
+  border-radius: 999px;
+  white-space: nowrap;
+}
   
 </style>
 </head>
