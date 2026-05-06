@@ -338,18 +338,24 @@ input::placeholder {
   </p>
 </div>
 
-<div class="card" id="myRatingCard">
+<!-- 説明カード -->
+<div class="card">
+  <div class="card-label">計算ルール</div>
 
-  <!-- 説明 -->
-  <div style="font-size:12px;color:var(--text-muted);line-height:1.8;margin-bottom:12px;">
-    <div class="card-label">計算ルール</div>
+  <div style="font-size:12px;color:var(--text-muted);line-height:1.8;">
     増減値の合計が±5以内の場合は、変動なし（0扱い）になります。<br><br>
 
     増減値の合計が±75以上の場合は特殊計算が適用されます。<br>
     ※（最も高い勝利相手レート + 最も低い敗北相手レート）÷4 + 通常の増減値÷2
   </div>
-  
-  <div class="card-label" id="myCardLabel">自分のレイティングポイント</div>
+</div>
+
+<!-- 入力カード -->
+<div class="card" id="myRatingCard">
+
+  <div class="card-label" id="myCardLabel">
+    自分のレイティングポイント
+  </div>
 
   <div class="field-row" id="myRatingRow">
     <div id="myRatingInputRow">
@@ -361,6 +367,7 @@ input::placeholder {
       <span id="liveNewRating" class="live-pill" style="display:none;"></span>
     </div>
   </div>
+
 </div>
 
   <div id="opponents"></div>
