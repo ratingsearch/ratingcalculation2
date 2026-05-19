@@ -497,8 +497,26 @@ function applyRules(myRating, rows) {
     finalChange = 0;
     rule = "alpha";
   } else if (Math.abs(totalRaw) >= BETA) {
-    const bestWin = wins.length ? Math.max(...wins.map(r => r.oppRating)) : FALLBACK;
-    const worstLoss = losses.length ? Math.min(...losses.map(r => r.oppRating)) : FALLBACK;
+
+    let bestWin, worstLoss;
+
+    // 通常
+    if (wins.length > 0) {
+      bestWin = Math.max(...wins.map(r => r.oppRating));
+    }
+    if (losses.length > 0) {
+      worstLoss = Math.min(...losses.map(r => r.oppRating));
+    }
+
+    // 全勝（負けなし）なら worstLoss も勝ち相手の最大値にする
+    if (losses.length === 0) {
+      worstLoss = bestWin;
+    }
+
+    // 全敗（勝ちなし）なら bestWin も負け相手の最小値にする
+    if (wins.length === 0) {
+      bestWin = worstLoss;
+    }
 
     const resultRating = myRating + totalRaw;
     const newRaw = (bestWin + worstLoss) / 4 + resultRating / 2;
